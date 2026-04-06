@@ -19,10 +19,12 @@
 ## 📂 项目结构（编写中...）
 ```
 .
-├── include/ # 头文件
+├── include/ # 头文件(暂无)
 ├── src/ # 源文件
-├── tests/ # 简单测试用例
-├── Makefile # 编译脚本（如有）
+│    ├── structure/ # 数据结构
+│    └── algorithm/ # 简单应用
+├── CMakeList.txt # 编译脚本
+├── LICENSE # 许可证
 └── README.md
 ```
 ## 🔧 编译与运行
