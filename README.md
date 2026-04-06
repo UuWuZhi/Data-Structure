@@ -20,7 +20,12 @@
 ```
 .
 ├── .idea/ # CLion配置文件(一般用不到)
-├── src/ # 源文件
+├── Directions/ # 简单的C++指导
+│    ├── Class.md # 类和对象
+│    ├── misc.md # 杂项
+│    ├── iostream.md # 输入输出
+│    └── template.md # 模板
+├── Src/ # 源文件
 │    ├── structure/ # 数据结构
 │    └── algorithm/ # 简单应用
 ├── CMakeList.txt # 编译脚本
