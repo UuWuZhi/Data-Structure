@@ -1,0 +1,41 @@
+name: Package and Release Source Code
+
+on:
+  push:
+    tags:
+      - 'v*'               # 当推送以 v 开头的标签时触发，例如 v1.0.0
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write      # 允许创建 Release 和上传附件
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create temporary packaging directory
+        run: |
+          mkdir -p package_temp
+          # 复制源文件目录
+          cp -r CppSrc package_temp/
+          cp -r CSrc  package_temp/
+          # 复制必要根目录文件
+          cp LICENSE README.md CMakeLists.txt package_temp/
+
+      - name: Archive into zip
+        run: |
+          cd package_temp
+          zip -r ../SourceCode.zip .
+          cd ..
+
+      - name: Create Release and upload asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: SourceCode.zip
+          draft: false                     # 是否发布为草稿（true 则需手动发布）
+          generate_release_notes: true     # 自动生成 Release 说明（基于 PR 和 commit）
+          # name: "Release ${{ github.ref_name }}"  # 可选，Release 标题
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
