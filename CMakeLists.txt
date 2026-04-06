@@ -21,4 +21,5 @@ list(APPEND ALL_SOURCES ${ALGORITHM_SOURCES} ${STRUCTURE_SOURCES})
 
 # 生成可执行文件
 add_executable(DataStructure ${ALL_SOURCES}
-        CSrc/structure/LinkedList.c)
+        CSrc/structure/LinkedList.c
+        CSrc/structure/Stack.c)
