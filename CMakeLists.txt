@@ -1,25 +1,23 @@
 cmake_minimum_required(VERSION 4.1)
 
-project(DataStructure)
+project(DataStructure LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 
-# 收集 algorithm 目录下所有源文件
+# 收集 algorithm 目录下所有源文件（包含 main）
 file(GLOB ALGORITHM_SOURCES
-        "CppSrc/algorithm/*.cpp"
-        "CSrc/algorithm/*.c"
+        "Algorithm/*.cpp"
 )
 
 # 收集 structure 目录下所有源文件
 file(GLOB STRUCTURE_SOURCES
-        "CppSrc/structure/*.cpp"
-        "CSrc/structure/*.c"
+        "C/Src/*.c"
 )
 
 # 收集 CInc 目录下所有头文件，并标记为项目头文件
 file(GLOB_RECURSE PROJECT_HEADERS
-        "CInc/*.h"
-        "CppInc/*.hpp"
+        "C/Inc/*.h"
+        "Cpp/*.hpp"
 )
 set_source_files_properties(${PROJECT_HEADERS} PROPERTIES HEADER_FILE_ONLY ON)
 
@@ -29,9 +27,9 @@ list(APPEND ALL_SOURCES ${ALGORITHM_SOURCES} ${STRUCTURE_SOURCES})
 # 生成可执行文件
 add_executable(DataStructure ${ALL_SOURCES}
         ${PROJECT_HEADERS}
-        CSrc/structure/LinkedList.c
-        CSrc/structure/Stack.c)
+        C/Src/LinkedList.c
+        C/Src/Stack.c)
 
 target_include_directories(DataStructure PUBLIC
-        "${CMAKE_CURRENT_SOURCE_DIR}/CppInc"
+        "${CMAKE_CURRENT_SOURCE_DIR}/Cpp"
 )

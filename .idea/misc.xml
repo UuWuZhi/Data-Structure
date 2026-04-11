@@ -6,7 +6,7 @@
   <component name="CMakeWorkspace" PROJECT_DIR="$PROJECT_DIR$" />
   <component name="CidrRootsConfiguration">
     <sourceRoots>
-      <file path="$PROJECT_DIR$/CSrc" />
+      <file path="$PROJECT_DIR$/C/Src" />
       <file path="$PROJECT_DIR$/CppSrc" />
     </sourceRoots>
   </component>
