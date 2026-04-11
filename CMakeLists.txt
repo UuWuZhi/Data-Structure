@@ -27,9 +27,9 @@ list(APPEND ALL_SOURCES ${ALGORITHM_SOURCES} ${STRUCTURE_SOURCES})
 # 生成可执行文件
 add_executable(DataStructure ${ALL_SOURCES}
         ${PROJECT_HEADERS}
-        C/Src/LinkedList.c
-        C/Src/Stack.c)
+)
 
 target_include_directories(DataStructure PUBLIC
+        "${CMAKE_CURRENT_SOURCE_DIR}/C/Inc"
         "${CMAKE_CURRENT_SOURCE_DIR}/Cpp"
 )

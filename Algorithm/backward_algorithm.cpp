@@ -103,7 +103,3 @@ std::string infixToPostfix(const std::string& infix) {
     }
     return postfix;
 }
-int main()
-{
-
-}

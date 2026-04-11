@@ -1,3 +1,4 @@
+#include "LinkedList.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -6,7 +7,7 @@
 /// </summary>
 typedef struct Node {
     void* data;         ///< 数据域。
-    struct Node* next;  ///< 指针域，指向下一个节点。
+    Node* next;  ///< 指针域，指向下一个节点。
 } Node;
 
 /// <summary>
