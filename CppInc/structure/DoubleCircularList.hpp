@@ -1,4 +1,9 @@
+#pragma once
+
 #include <iostream>
+
+namespace ds {
+
 template<class T>
 class DoubleCircularList {
     struct Node {
@@ -136,3 +141,5 @@ public:
         std::cout << std::endl;
     }
 };
+
+} // namespace ds

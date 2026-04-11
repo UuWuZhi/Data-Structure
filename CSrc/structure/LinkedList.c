@@ -1,24 +1,33 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// 链表节点结构体
+/// <summary>
+/// 链表节点结构体。
+/// </summary>
 typedef struct Node {
-    int data;           // 数据域
-    struct Node* next;  // 指针域，指向下一个节点
+    int data;           ///< 数据域。
+    struct Node* next;  ///< 指针域，指向下一个节点。
 } Node;
 
-// 初始化带头节点的链表：创建一个头节点，其next指向NULL
+/// <summary>
+/// 初始化带头节点的链表，创建一个头节点并将其 next 指向 NULL。
+/// </summary>
+/// <returns>链表头节点指针。</returns>
 Node* initList() {
     Node* head = (Node*)malloc(sizeof(Node));
     if (head == NULL) {
         printf("内存分配失败！\n");
         exit(1);
     }
-    head->next = NULL;  // 头节点不存储数据，仅作为起始标记
+    head->next = NULL;  ///< 头节点不存储数据，仅作为起始标记。
     return head;
 }
 
-// 头插法：在头节点之后插入新节点（新节点成为第一个实际节点）
+/// <summary>
+/// 头插法：在头节点之后插入新节点（新节点成为第一个实际节点）。
+/// </summary>
+/// <param name="head">链表头节点。</param>
+/// <param name="data">待插入的数据。</param>
 void insertAtHead(Node* head, const int data) {
     Node* newNode = (Node*)malloc(sizeof(Node));
     if (newNode == NULL) {
@@ -26,11 +35,15 @@ void insertAtHead(Node* head, const int data) {
         return;
     }
     newNode->data = data;
-    newNode->next = head->next;  // 新节点指向原第一个节点
-    head->next = newNode;        // 头节点指向新节点
+    newNode->next = head->next;  ///< 新节点指向原第一个节点。
+    head->next = newNode;        ///< 头节点指向新节点。
 }
 
-// 尾插法：在链表末尾插入新节点
+/// <summary>
+/// 尾插法：在链表末尾插入新节点。
+/// </summary>
+/// <param name="head">链表头节点。</param>
+/// <param name="data">待插入的数据。</param>
 void insertAtTail(Node* head, const int data) {
     Node* newNode = (Node*)malloc(sizeof(Node));
     if (newNode == NULL) {
@@ -41,14 +54,20 @@ void insertAtTail(Node* head, const int data) {
     newNode->next = NULL;
 
     Node* cur = head;
-    while (cur->next != NULL) {  // 找到最后一个节点
+    while (cur->next != NULL) {  ///< 找到最后一个节点。
         cur = cur->next;
     }
     cur->next = newNode;
 }
 
-// 按位置插入：在第pos个位置（1为第一个实际节点）后插入新节点
-// 若pos为0，等同于头插法；若pos大于链表长度，则插入到末尾
+/// <summary>
+/// 按位置插入：在第 pos 个位置（1 为第一个实际节点）后插入新节点。
+/// </summary>
+/// <param name="head">链表头节点。</param>
+/// <param name="data">待插入的数据。</param>
+/// <param name="pos">
+/// 插入位置。pos 为 0 时等同于头插法；pos 大于链表长度时插入到末尾。
+/// </param>
 void insertAtPosition(Node* head, const int data, const int pos) {
     if (pos < 0) {
         printf("位置无效！\n");
@@ -63,14 +82,14 @@ void insertAtPosition(Node* head, const int data, const int pos) {
 
     Node* cur = head;
     int i = 0;
-    // 移动到待插入位置的前一个节点
+    /// <remarks>移动到待插入位置的前一个节点。</remarks>
     while (cur != NULL && i < pos) {
         cur = cur->next;
         i++;
     }
     if (cur == NULL) {
         printf("位置超出链表长度，将插入到末尾。\n");
-        // 此时cur为NULL，需要重新定位到最后一个节点
+        /// <remarks>此时 cur 为 NULL，需要重新定位到最后一个节点。</remarks>
         cur = head;
         while (cur->next != NULL) cur = cur->next;
         newNode->next = cur->next;
@@ -81,7 +100,11 @@ void insertAtPosition(Node* head, const int data, const int pos) {
     }
 }
 
-// 删除第一个值为target的节点
+/// <summary>
+/// 删除第一个值为 target 的节点。
+/// </summary>
+/// <param name="head">链表头节点。</param>
+/// <param name="target">待删除的目标值。</param>
 void deleteByValue(Node* head, const int target) {
     if (head->next == NULL) {
         printf("链表为空，无法删除。\n");
@@ -102,7 +125,11 @@ void deleteByValue(Node* head, const int target) {
     printf("未找到值为 %d 的节点。\n", target);
 }
 
-// 删除第pos个节点（1表示第一个实际节点）
+/// <summary>
+/// 删除第 pos 个节点（1 表示第一个实际节点）。
+/// </summary>
+/// <param name="head">链表头节点。</param>
+/// <param name="pos">待删除节点的位置。</param>
 void deleteAtPosition(Node* head, int pos) {
     if (pos < 1 || head->next == NULL) {
         printf("位置无效或链表为空。\n");
@@ -125,7 +152,12 @@ void deleteAtPosition(Node* head, int pos) {
     printf("成功删除第 %d 个节点。\n", pos);
 }
 
-// 查找第一个值为target的节点，返回其位置（1起始），未找到返回-1
+/// <summary>
+/// 查找第一个值为 target 的节点。
+/// </summary>
+/// <param name="head">链表头节点。</param>
+/// <param name="target">要查找的目标值。</param>
+/// <returns>节点位置（从 1 开始），未找到返回 -1。</returns>
 int search(const Node* head, const int target) {
     const Node* cur = head->next;
     int pos = 1;
@@ -139,7 +171,10 @@ int search(const Node* head, const int target) {
     return -1;
 }
 
-// 遍历链表并打印所有节点的值
+/// <summary>
+/// 遍历链表并打印所有节点的值。
+/// </summary>
+/// <param name="head">链表头节点。</param>
 void printList(const Node* head) {
     if (head->next == NULL) {
         printf("链表为空。\n");
@@ -154,7 +189,10 @@ void printList(const Node* head) {
     printf("\n");
 }
 
-// 释放整个链表（包括头节点）
+/// <summary>
+/// 释放整个链表（包括头节点）。
+/// </summary>
+/// <param name="head">头节点指针的地址，用于销毁后置空。</param>
 void destroyList(Node** head) {
     Node* cur = *head;
     while (cur != NULL) {

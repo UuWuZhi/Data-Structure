@@ -1,4 +1,9 @@
+#pragma once
+
 #include <iostream>
+
+namespace ds {
+
 template<class T>
 class Deque
 {
@@ -61,3 +66,5 @@ public:
         return true;
     }
 };
+
+} // namespace ds

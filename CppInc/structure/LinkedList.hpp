@@ -1,6 +1,12 @@
+#pragma once
+
 #include <iostream>
 #include <sstream>
 #include <algorithm>
+#include <string>
+
+namespace ds {
+
 template<class T>
 class LinkedList {
     struct Node
@@ -163,3 +169,5 @@ public:
         std::cout << s << std::endl;
     }
 };
+
+} // namespace ds

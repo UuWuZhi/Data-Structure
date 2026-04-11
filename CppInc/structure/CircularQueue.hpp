@@ -1,4 +1,9 @@
+#pragma once
+
 #include <iostream>
+
+namespace ds {
+
 template<class T>
 class CircularQueue
 {
@@ -55,3 +60,5 @@ public:
         std::cout << std::endl;
     }
 };
+
+} // namespace ds

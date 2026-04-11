@@ -1,4 +1,8 @@
+#pragma once
+
 #include <iostream>
+
+namespace ds {
 
 template<class T>
 class Stack
@@ -52,3 +56,5 @@ public:
         return true;
     }
 };
+
+} // namespace ds

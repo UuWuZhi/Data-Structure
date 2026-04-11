@@ -1,4 +1,8 @@
+#pragma once
+
 #include <iostream>
+
+namespace ds {
 
 template<class T>
 class LinkedStack
@@ -73,3 +77,5 @@ public:
         return count;
     }
 };
+
+} // namespace ds
