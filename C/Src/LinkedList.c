@@ -6,8 +6,8 @@
 /// 链表节点结构体。
 /// </summary>
 typedef struct Node {
-    void* data;         ///< 数据域。
-    Node* next;  ///< 指针域，指向下一个节点。
+    void* data;     ///< 数据域。
+    Node* next;     ///< 指针域，指向下一个节点。
 } Node;
 
 /// <summary>
