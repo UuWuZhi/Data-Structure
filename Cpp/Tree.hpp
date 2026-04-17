@@ -2,62 +2,100 @@
 
 #include <iostream>
 #include <vector>
-#include <deque>
+#include <queue>
+#include <functional>
 
-namespace ds {
+#include "ListTree.hpp"
 
-template<class T>
-class BinaryTree
+namespace ds
 {
+template<class T>
+class Tree
+{
+    template <class U> friend class TreeSolution;
     struct Node
     {
         T data;
-        Node* left;
-        Node* right;
+        Node* child;
+        Node* sibling;
 
-        explicit Node(T val) : data(val), left(nullptr), right(nullptr) {}
+        explicit Node(const T& data) : data(data), child(nullptr), sibling(nullptr) {}
     };
 
     Node* root;
 
-    Node* buildPreIn(const std::vector<T>& pre, const int preBegin, const int preEnd,
-                     const std::vector<T>& in, const int inBegin, const int inEnd)
+    void clear(Node* rootNode)
     {
-        if (preBegin > preEnd || inBegin > inEnd) return nullptr;
-        if (preEnd - preBegin != inEnd - inBegin) return nullptr;
+        if (rootNode == nullptr) return;
+        clear(rootNode->child);
+        clear(rootNode->sibling);
+        delete rootNode;
+    }
 
-        T rootVal = pre[preBegin];
-        Node* node = new Node(rootVal);
+    Node* findNode(Node* node, const T& data) const
+    {
+        if (node == nullptr) return nullptr;
+        if (node->data == data) return node;
+        Node* foundNode = findNode(node->child, data);
+        if (foundNode != nullptr) return foundNode;
+        return findNode(node->sibling, data);
+    }
 
-        int pos = inBegin;
-        while (pos <= inEnd && in[pos] != rootVal) ++pos;
-        if (pos > inEnd) return nullptr;
+    void preOrder(Node* rootNode)
+    {
+        if (rootNode == nullptr) return;
+        std::cout << rootNode->data << ' ';
+        preOrder(rootNode->child);
+        preOrder(rootNode->sibling);
+    }
 
-        if (pos == inEnd && in[pos] != rootVal) return nullptr;
+    Node* buildLevel(const std::vector<T>& nodeData, const std::vector<int>& degrees)
+    {
+        if (nodeData.empty() || degrees.empty()) return nullptr;
+        if (nodeData.size() != degrees.size()) return nullptr;
+        clear(root);
+        root = new Node(nodeData[0]);
+        if (nodeData.size() == 1) return root;
 
-        // 3 9 20 15 7 -> 9 + 20 15 7
-        // 9 3 15 20 7 -> 9 + 15 20 7
-        const int leftSize = pos - inBegin;
-        node->left = buildPreIn(pre, preBegin + 1, preBegin + leftSize,
-                                in, inBegin, pos - 1);
-        node->right = buildPreIn(pre, preBegin + leftSize + 1, preEnd,
-                                 in, pos + 1, inEnd);
-        return node;
+        std::queue<std::pair<Node*, size_t>> q;
+        q.push({root, 0});
+        size_t nextIdx = 1;
+
+        while (!q.empty() && nextIdx < nodeData.size())
+        {
+            auto [parent, parentIdx] = q.front();
+            q.pop();
+            int childCount = degrees[parentIdx];
+            Node* prevChild = nullptr;
+
+            for (size_t i = 0; i < childCount && nextIdx < nodeData.size(); ++i)
+            {
+                Node* child = new Node(nodeData[nextIdx]);
+                if (prevChild == nullptr)
+                {
+                    parent->child = child;
+                } else
+                {
+                    prevChild->sibling = child;
+                }
+                prevChild = child;
+                q.push({child, nextIdx});
+                nextIdx++;
+            }
+        }
+        return root;
     }
 public:
-    BinaryTree() : root(nullptr) {}
-    ~BinaryTree()
-    {
-        clear(root);
-        root = nullptr;
-    }
-    BinaryTree(const BinaryTree& tree) = delete;
-    BinaryTree& operator=(const BinaryTree& tree) = delete;
-    BinaryTree(BinaryTree&& other) noexcept : root(other.root)
+    Tree(const Tree&) = delete;
+    Tree& operator=(const Tree&) = delete;
+    Tree() : root(nullptr) {}
+    explicit Tree(Node* rootNode) : root(rootNode) {}
+    ~Tree() {clear(root); root = nullptr;}
+    Tree(Tree&& other) noexcept : root(other.root)
     {
         other.root = nullptr;
     }
-    BinaryTree& operator=(BinaryTree&& other) noexcept
+    Tree& operator=(Tree&& other) noexcept
     {
         if (this != &other)
         {
@@ -67,62 +105,98 @@ public:
         }
         return *this;
     }
-
-    void clear(Node* node)
-    {
-        if (node == nullptr) return;
-        clear(node->left);
-        clear(node->right);
-        delete node;
-    }
-
-    static BinaryTree buildFromPreIn(std::vector<T> pre, std::vector<T> in)
-    {
-        BinaryTree tree;
-        if (pre.size() != in.size()) return tree;
-        if (pre.empty()) return tree;
-
-        tree.root = tree.buildPreIn(pre, 0, pre.size() - 1, in, 0, in.size() - 1);
-        return tree;
+    void preOrderTraversal() const {
+        preOrder(root);
+        std::cout << std::endl;
     }
 
     void levelOrderTraversal() const
     {
         if (root == nullptr) return;
-        std::deque<Node*> q;
-        q.push_back(root);
+        std::queue<Node*> q;
+        std::vector<size_t> degrees;
+        q.push(root);
         while (!q.empty())
         {
-            Node* cur = q.front();
-            q.pop_front();
-            if (cur != nullptr)
+            const size_t levelSize = q.size();
+            for (size_t i = 0; i < levelSize; ++i)
             {
-                std::cout << cur->data << ' ';
-                q.push_back(cur->left);
-                q.push_back(cur->right);
-            } else
-            {
-                bool hasNonNull = false;
-                for (Node* node : q)
+                Node* curNode = q.front();
+                size_t degree = 0;
+                q.pop();
+                std::cout << curNode->data << ' ';
+                Node* child = curNode->child;
+                while (child != nullptr)
                 {
-                    if (node != nullptr)
-                    {
-                        hasNonNull = true;
-                        break;
-                    }
+                    q.push(child);
+                    child = child->sibling;
+                    degree++;
                 }
-                if (hasNonNull)
-                {
-                    std::cout << "-1 ";
-                }
-                else
-                {
-                    break;
-                }
+                degrees.push_back(degree);
             }
         }
         std::cout << std::endl;
+        for (const size_t i : degrees)
+        {
+            std::cout << i << ' ';
+        }
+        std::cout << std::endl;
+    }
+
+    void insert(const T& parentData, const T& data)
+    {
+        Node* parentNode = findNode(root, parentData);
+        if (parentNode == nullptr) return;
+
+        Node* newNode = new Node(data);
+        if (parentNode->child == nullptr)
+        {
+            parentNode->child = newNode;
+        }
+        else
+        {
+            Node* child = parentNode->child;
+            while (child->sibling != nullptr)
+            {
+                child = child->sibling;
+            }
+            child->sibling = newNode;
+        }
+    }
+
+    static Tree buildFromLevel(const std::vector<T>& nodeData, const std::vector<int>& degrees)
+    {
+        Tree tree;
+        if (nodeData.empty() || degrees.empty()) return tree;
+        if (nodeData.size() != degrees.size()) return tree;
+
+        tree.root = tree.buildLevel(nodeData, degrees);
+        return tree;
     }
 };
+template<class T>
+class TreeSolution
+{
+    using Node = Tree<T>::Node;
+    using ListNode = ListTree<T>::Node;
 
-} // namespace ds
+    static Tree<T> convertToChildSibling(const ListTree<T>& src)
+    {
+        const int num = src.size();
+        if (num == 0) return Tree<T>(nullptr);
+
+        std::vector<Node*> mapping(num, nullptr);
+
+        std::function<Node*(int)> buildNode = [&](int idx) -> Node*
+        {
+            if (idx < 0 || idx >= num) return nullptr;
+            if (mapping[idx] != nullptr) return mapping[idx];
+        };
+
+        int rootIdx = src.getRootIndex();
+        Node* rootNode = buildNode(rootIdx);
+        return Tree<T>(rootNode);
+
+    }
+};
+}

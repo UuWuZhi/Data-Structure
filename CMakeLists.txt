@@ -33,7 +33,8 @@ foreach(ALGORITHM_SOURCE IN LISTS ALGORITHM_SOURCES)
     if(NOT ALGORITHM_CONTENTS MATCHES "(^|[\r\n])[ \t]*int[ \t]+main[ \t]*\\(")
         # 没有 main 的算法源文件仍然建目标，但不参与默认 all 构建
         set(EXCLUDE_SWITCH EXCLUDE_FROM_ALL
-                Algorithm/5-2.cpp)
+                Cpp/ListTree.hpp
+        )
         message(WARNING "Algorithm source ${ALGORITHM_SOURCE} has no main(), target ${TARGET_NAME} is EXCLUDE_FROM_ALL.")
     endif()
 
