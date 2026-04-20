@@ -34,6 +34,9 @@ foreach(ALGORITHM_SOURCE IN LISTS ALGORITHM_SOURCES)
         # 没有 main 的算法源文件仍然建目标，但不参与默认 all 构建
         set(EXCLUDE_SWITCH EXCLUDE_FROM_ALL
                 Cpp/ListTree.hpp
+                Algorithm/5-5.cpp
+                Cpp/TreeSolution.hpp
+                Cpp/ThreadedBinaryTree.hpp
         )
         message(WARNING "Algorithm source ${ALGORITHM_SOURCE} has no main(), target ${TARGET_NAME} is EXCLUDE_FROM_ALL.")
     endif()

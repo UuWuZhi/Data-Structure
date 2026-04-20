@@ -316,44 +316,4 @@ public:
     }
 
 };
-template <class T>
-/// <summary>
-/// 二叉树相关算法集合。
-/// </summary>
-class BinaryTreeSolution
-{
-    using Node = BinaryTree<T>::Node;
-    using Tree = BinaryTree<T>;
-public:
-    /// <summary>
-    /// 计算二叉树的最大宽度（按完全二叉树索引位置计）。
-    /// </summary>
-    /// <param name="tree">目标二叉树。</param>
-    /// <returns>二叉树最大宽度。</returns>
-    static int widthOfBinaryTree(const Tree& tree)
-    {
-        const Node* root = tree.root;
-        if (root == nullptr) return 0;
-        int maxWidth = 0;
-        std::queue<std::pair<const Node*, int>> q;
-        q.push({root, 0});
-
-        while (!q.empty())
-        {
-            const size_t levelSize = q.size();
-            const int left = q.front().second;
-            int right = left;
-            for (size_t i = 0; i < levelSize; ++i)
-            {
-                auto [node, idx] = q.front();
-                q.pop();
-                right = idx;
-                if (node->left != nullptr) q.push({node->left, 2 * idx});
-                if (node->right != nullptr) q.push({node->right, 2 * idx + 1});
-            }
-            maxWidth = std::max(maxWidth, right - left + 1);
-        }
-        return maxWidth;
-    }
-};
 } // namespace ds

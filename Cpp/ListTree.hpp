@@ -10,7 +10,7 @@ template<class T>
 /// </summary>
 class ListTree
 {
-    template <class U> friend class BinaryTreeSolution;
+    template <class U> friend class TreeSolution;
     /// <summary>
     /// 孩子链表节点，记录孩子索引及后继指针。
     /// </summary>
