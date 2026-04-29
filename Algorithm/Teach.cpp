@@ -46,3 +46,7 @@ void deleteNode(Node* head, int val)
         curNode = curNode->next;
     }
 }
+int main()
+{
+
+}

@@ -1,0 +1,8 @@
+#include "ThreadedBinaryTree.hpp"
+int main()
+{
+    std::string str;
+    std::cin >> str;
+    ds::ThreadedBinaryTree<char> tree = ds::ThreadedBinaryTree<char>::buildFromString(str);
+    tree.postOrderTraversalRecursion();
+}

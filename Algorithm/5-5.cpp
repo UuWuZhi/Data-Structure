@@ -23,6 +23,6 @@ int main()
             list_tree.addChild(i,child_idx);
         }
     }
-    ds::Tree<char> child_sibling_tree = ds::TreeSolution<char>::convertToChildSibling(list_tree);
-    child_sibling_tree.preOrderTraversal();
+    // ds::Tree<char> child_sibling_tree = ds::TreeSolution<char>::convertToChildSibling(list_tree);
+    // child_sibling_tree.preOrderTraversal();
 }

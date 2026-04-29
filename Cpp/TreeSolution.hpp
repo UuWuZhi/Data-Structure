@@ -3,6 +3,7 @@
 #include "ListTree.hpp"
 #include "Tree.hpp"
 #include "BinaryTree.hpp"
+#include "ThreadedBinaryTree.hpp"
 #include <functional>
 namespace ds
 {
@@ -71,10 +72,10 @@ namespace ds
         }
     };
     template <class T>
-/// <summary>
-/// 二叉树相关算法集合。
-/// </summary>
-class BinaryTreeSolution
+    /// <summary>
+    /// 二叉树相关算法集合。
+    /// </summary>
+    class BinaryTreeSolution
     {
         using Node = BinaryTree<T>::Node;
         using Tree = BinaryTree<T>;
@@ -109,5 +110,11 @@ class BinaryTreeSolution
             }
             return maxWidth;
         }
+    };
+    template <class T>
+    class ThreadedBinaryTreeSolution
+    {
+        using Node = ThreadedBinaryTree<T>::Node;
+        using Tree = ThreadedBinaryTree<T>;
     };
 }
